@@ -1,0 +1,39 @@
+version: "3.3"
+services:
+    web:
+        image: nginx:latest
+        container_name: web
+        restart: always
+        ports:
+          - ${APP_PORT}:${CONTAINER_PORT}
+        volumes:
+          - ${APP_PATH_HOST}:${CONTAINER_PATH_HOST}
+          - ${APP_PATH_NGINX_CONFIG}:${CONTAINER_PATH_NGINX_CONFIG}
+          - ${APP_PATH_NGINX_LOG}:${CONTAINER_PATH_NGINX_LOG}
+        working_dir: ${CONTAINER_PATH_HOST}
+        links:
+          - php
+
+    mysql:
+        image: mysql:latest
+        container_name: mysql
+        restart: always
+        environment:
+          MYSQL_ROOT_PASSWORD: ${MYSQL_PASSWORD}
+        volumes:
+          - ${DB_PATH_HOST}:/var/lib/mysql
+
+    php:
+        build: ./php
+        container_name: php-fpm
+        volumes:
+          - ${APP_PATH_HOST}:${CONTAINER_PATH_HOST}
+        working_dir: ${CONTAINER_PATH_HOST}
+
+    composer:
+        image: composer:latest
+        container_name: composer
+        volumes:
+          - ${APP_PATH_HOST}:${CONTAINER_PATH_HOST}
+        working_dir: ${CONTAINER_PATH_HOST}
+
