@@ -16,7 +16,7 @@ CONTAINER_PATH_NGINX_CONFIG=/etc/nginx/conf.d # Путь до файлов nginx
 
 APP_PATH_NGINX_LOG=~/www/PATH_TO_PROJECT/nginx/log # Путь до логов в вашем проекте
 CONTAINER_PATH_NGINX_LOG=/var/log/nginx/ # Путь до логов в контейнере
-```
+
 
 #MYSQL
 
@@ -27,7 +27,7 @@ MYSQL_PASSWORD=root # Пароль до БД
 APP_PORT=8080 # Порт по которому будет доступен ваш сайт
 
 CONTAINER_PORT=80 # Порт с которого прокидываем
-
+```
 
 ### Запуск контейнеров
 Первый запуск 
