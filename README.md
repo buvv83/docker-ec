@@ -44,4 +44,33 @@ docker-compose up
 docker-compose restart NAME_OF_SERVICE
 ```
 
+### Зайти в сервис
+```
+docker-compose exec NAME_OF_SERVICE bash
+```
 
+### Пример конфигурации NGINX
+```
+server {
+    listen 80;
+    server_name localhost;
+
+    set  $root_path     '/var/www';
+    root $root_path;
+
+    index index.php index.html index.htm;
+    
+    error_log  /var/log/nginx/error.log;
+    access_log /var/log/nginx/access.log;
+
+    location ~ \.php$ {
+	    try_files $uri =404;
+	    fastcgi_split_path_info  (.+?\.php)(/.*)$;
+	    fastcgi_pass php:9000;
+	    fastcgi_index index.php;
+	    include fastcgi_params;
+	    fastcgi_param SCRIPT_FILENAME $document_root$fastcgi_script_name;
+	    fastcgi_param PATH_INFO $fastcgi_path_info;
+    }
+}
+```
