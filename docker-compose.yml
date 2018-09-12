@@ -5,14 +5,16 @@ services:
         container_name: web
         restart: always
         ports:
-          - ${APP_PORT}:${CONTAINER_PORT}
+          - ${APP_IP}:${APP_PORT}:${CONTAINER_PORT}
         volumes:
           - ${APP_PATH_HOST}:${CONTAINER_PATH_HOST}
-          - ${APP_PATH_NGINX_CONFIG}:${CONTAINER_PATH_NGINX_CONFIG}
-          - ${APP_PATH_NGINX_LOG}:${CONTAINER_PATH_NGINX_LOG}
+          - ${APP_PATH_NGINX_CONFIG}:/etc/nginx/conf.d
+          - ${APP_PATH_NGINX_LOG}:/var/log/nginx/
         working_dir: ${CONTAINER_PATH_HOST}
         links:
           - php
+          - mysql
+          - node
 
     mysql:
         image: mysql:latest
@@ -30,10 +32,15 @@ services:
           - ${APP_PATH_HOST}:${CONTAINER_PATH_HOST}
         working_dir: ${CONTAINER_PATH_HOST}
 
-    composer:
-        image: composer:latest
-        container_name: composer
+    node:
+        image: node:latest
         volumes:
           - ${APP_PATH_HOST}:${CONTAINER_PATH_HOST}
         working_dir: ${CONTAINER_PATH_HOST}
+        tty: true
+
+    rabbitmq:
+        image: rabbitmq:latest
+        container_name: rabbitmq
+  
 
