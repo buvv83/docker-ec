@@ -11,6 +11,8 @@ services:
           - ${APP_PATH_NGINX_CONFIG}:/etc/nginx/conf.d
           - ${APP_PATH_NGINX_LOG}:/var/log/nginx/
         working_dir: ${CONTAINER_PATH_HOST}
+        depends_on:
+          - php
         links:
           - php
           - mysql
